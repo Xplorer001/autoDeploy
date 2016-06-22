@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="robots" content="noindex">
+	<title>Simple PHP Git deploy script</title>
+	<style>
+body { padding: 0 1em; background: #222; color: #fff; }
+h2, .error { color: #c33; }
+.prompt { color: #6be234; }
+.command { color: #729fcf; }
+.output { color: #999; }
+	</style>
+</head>
+<body>
+<pre>
+
+Checking the environment ...
+
+Running as <b>www-data</b>.
+
+<b>/usr/bin/git</b> : git version 1.9.1
+<b>/usr/bin/rsync</b> : rsync  version 3.1.0  protocol version 31
+
+Environment OK.
+
+Using configuration defined in deploy-config.php
+
+Deploying https://github.com/Xplorer001/autoDeploy.git master
+to        /var/www/html/autoDeploy ...
+
+
+<span class="prompt">$</span> <span class="command">git clone --depth=1 --branch master https://github.com/Xplorer001/autoDeploy.git /tmp/spgd-80d3577dec0baaca42c6f8fa627c50c2/</span>
+<div class="output">Cloning into '/tmp/spgd-80d3577dec0baaca42c6f8fa627c50c2'...</div>
+
+<span class="prompt">$</span> <span class="command">git submodule update --init --recursive</span>
+<div class="output"></div>
+
+<span class="prompt">$</span> <span class="command">git --git-dir=&quot;/tmp/spgd-80d3577dec0baaca42c6f8fa627c50c2/.git&quot; --work-tree=&quot;/tmp/spgd-80d3577dec0baaca42c6f8fa627c50c2/&quot; describe --always &gt; /tmp/spgd-80d3577dec0baaca42c6f8fa627c50c2/VERSION</span>
+<div class="output"></div>
+
+<span class="prompt">$</span> <span class="command">rsync -rltgoDzvO /tmp/spgd-80d3577dec0baaca42c6f8fa627c50c2/ /var/www/html/autoDeploy   --exclude=.git</span>
+<div class="output">sending incremental file list
+rsync: chgrp &quot;/var/www/html/autoDeploy/.&quot; failed: Operation not permitted (1)
+./
+VERSION
+index.html
+shop.html
+rsync: mkstemp &quot;/var/www/html/autoDeploy/.VERSION.SVRKOn&quot; failed: Permission denied (13)
+rsync: mkstemp &quot;/var/www/html/autoDeploy/.index.html.Ybrygc&quot; failed: Permission denied (13)
+rsync: mkstemp &quot;/var/www/html/autoDeploy/.shop.html.MRimI0&quot; failed: Permission denied (13)
+
+sent 867 bytes  received 442 bytes  2,618.00 bytes/sec
+total size is 988  speedup is 0.75
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1183) [sender=3.1.0]</div>
+
+<div class="error">
+Error encountered!
+Stopping the script to prevent possible data loss.
+CHECK THE DATA IN YOUR TARGET DIR!
+</div>
+
+
+
+Cleaning up temporary files ...
+
+<span class="prompt">$</span> <span class="command">rm -rf /tmp/spgd-80d3577dec0baaca42c6f8fa627c50c2/</span>
+<div class="output"></div>
+
+Done.
+</pre>
+</body>
+</html
